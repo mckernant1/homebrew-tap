@@ -1,2 +1,2 @@
-# tools
-Tom McKernan's Tools
+# Tools
+Tom McKernan's Homebrew tap
