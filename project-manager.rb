@@ -5,7 +5,9 @@ class ProjectManager < Formula
   sha256 "2313adcdb5632e43e5844d8df652b462368b378920c3bfe0fc7b3a647ead0748"
 
   bottle do
-    sha256 "67fef59bf562dcc1373cc9eb006d0ad13adbc5ae7ec399b82637a68e61683260" => :mojave
+    cellar :any_skip_relocation
+    rebuild 1
+    sha256 "3f49d8f6bc1b3b5b8513ad1659c3cbb4cb8f00bf3fc0d32e2222f60cc8cfa0a2" => :mojave
   end
 
   depends_on "rust" => :build
