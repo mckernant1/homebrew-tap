@@ -1,8 +1,8 @@
 class Hasher < Formula
-  desc "SSH automation tool based on Groovy DSL"
+  desc "A hash verifier"
   homepage "https://github.com/mckernant1/hasher"
   url "https://github.com/mckernant1/hasher/archive/0.1.tar.gz"
-  sha256 "8364361aa04715ef754fb0a9dabaca5f2b69ce7d6c516c34d4aecf5886bb3727"
+  sha256 "1b24a3af5ea0a3b089df260485ae7d807c3d9aac16e52d9b820f8d7771b7cf1c"
 
   depends_on :java => "1.8"
 
