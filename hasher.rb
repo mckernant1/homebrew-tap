@@ -1,8 +1,8 @@
 class Hasher < Formula
   desc "A hash verifier"
   homepage "https://github.com/mckernant1/hasher"
-  url "https://github.com/mckernant1/hasher/archive/0.2.tar.gz"
-  sha256 "1b24a3af5ea0a3b089df260485ae7d807c3d9aac16e52d9b820f8d7771b7cf1c"
+  url "https://github.com/mckernant1/hasher/archive/0.3.tar.gz"
+  sha256 "28860bcad9419bb0e4c7f9e0a33cecac2d9bee0d94607826597b8c59be088487"
 
   depends_on :java => "1.8"
 
