@@ -8,7 +8,7 @@ class ProjectManager < Formula
   depends_on "git"
 
   def install
-    system "cargo", "install", "--root", prefix, "--path", "."
+    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
   end
 
 end
