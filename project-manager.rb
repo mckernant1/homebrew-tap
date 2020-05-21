@@ -1,8 +1,8 @@
 class ProjectManager < Formula
   desc "Your personal project manager"
   homepage "https://github.com/mckernant1/project-manager"
-  url "https://github.com/mckernant1/project_manager/archive/0.3.3.tar.gz"
-  sha256 "77809601f1c30f5e5f51c112ab8e07de55a3122fe8cfb9a49c1ec8457dbee5f1"
+  url "https://github.com/mckernant1/project_manager/archive/0.3.4.tar.gz"
+  sha256 "bf3bc8e688c1c7d5e02135ea2f99792fd3b6e815f6fa785b5ffbf9dac4646718"
 
   depends_on "rust" => :build
   depends_on "git"
