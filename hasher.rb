@@ -6,6 +6,12 @@ class Hasher < Formula
 
   depends_on :java => "1.8"
 
+  bottle do
+    root_url "https://homebrew.bintray.com/bottles-tools"
+    cellar :any_skip_relocation
+    sha256 "3aca9f1843fbed13c11c2bc5a754c29146b4ef2e68216276a539730c1b0e9a9e" => :catalina
+  end
+
   def install
     system "./gradlew", "shadowJar"
     libexec.install "build/libs/hasher-all.jar"

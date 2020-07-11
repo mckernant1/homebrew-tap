@@ -6,6 +6,12 @@ class Timeit < Formula
 
   depends_on "rust" => :build
 
+  bottle do
+    root_url "https://homebrew.bintray.com/bottles-tools"
+    cellar :any_skip_relocation
+    sha256 "2edd97f5bee9f1d125e848af665b09ba09560f60959714c102e9655b2027969d" => :catalina
+  end
+
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."
   end
