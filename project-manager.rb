@@ -7,12 +7,6 @@ class ProjectManager < Formula
   depends_on "rust" => :build
   depends_on "git"
 
-  bottle do
-    root_url "https://homebrew.bintray.com/bottles-tools"
-    cellar :any_skip_relocation
-    sha256 "a359f64449817dffd32a6e9d3e7f3eab1dd5063a48056f98c95ac2aca1c06361" => :catalina
-  end
-
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."
   end
