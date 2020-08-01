@@ -1,14 +1,16 @@
 class AutoUpdater < Formula
   desc "Automatically updates added package managers"
   homepage "https://github.com/mckernant1/auto-updater"
-  url "https://github.com/mckernant1/auto-updater/archive/0.1.7.tar.gz"
-  sha256 "d4c6400aea1196df5abc0438513e8a6e9a17865110e0dbb1c3e0dc843ee159dd"
+  url "https://github.com/mckernant1/auto-updater/archive/0.1.8.tar.gz"
+  sha256 "34ca1a43e6c163c1e005756829712fec587d05e86ce4b12ffcf152b53489181f"
 
   depends_on "rust" => :build
   depends_on "git"
 
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    bash_completion.install "completions/auto-updater.bash"
+    zsh_completion.install "completions/_auto-updater"
   end
 
   def caveats; <<~EOS
