@@ -4,7 +4,7 @@ class Hasher < Formula
   url "https://github.com/mckernant1/hasher/archive/0.4.tar.gz"
   sha256 "279468bdc607b5eb9903f0f8fda586e13b47232f78af509634c6cd37474314f7"
 
-  depends_on :openjdk@8
+  depends_on "openjdk@8"
 
   bottle do
     root_url "https://homebrew.bintray.com/bottles-tools"

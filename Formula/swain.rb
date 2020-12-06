@@ -4,7 +4,7 @@ class Swain < Formula
   url "https://github.com/mckernant1/swain/archive/0.0.1.tar.gz"
   sha256 "08013e379dab9eec5f6f1fb7e3affa3f03f8bc643bc1853c590052ad33d519f6"
 
-  depends_on :openjdk@8
+  depends_on "openjdk@8"
 
   def install
     system "./gradlew", "shadowJar"
