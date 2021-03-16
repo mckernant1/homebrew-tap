@@ -1,8 +1,8 @@
 class CodestationTransport < Formula
   desc "Generates a script to make your new setup the same as your old one"
   homepage "https://github.com/mckernant1/codestation-transport"
-  url "https://github.com/mckernant1/codestation-transport/archive/0.0.2.tar.gz"
-  sha256 "dcd8c9591570ec2164ef51ff7af9343fc17c815a4969e2571195af5d2c33a2cc"
+  url "https://github.com/mckernant1/codestation-transport/archive/0.0.3.tar.gz"
+  sha256 "a07734cfc21e4c8fdf8b6b6a86c130d32fdbc8431949b91ce39c7ca17aaee25e"
 
   depends_on "rust" => :build
 
