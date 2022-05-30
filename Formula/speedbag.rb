@@ -1,4 +1,4 @@
-class Netero < Formula
+class Speedbag < Formula
   desc "Sample Server"
   homepage "https://github.com/mckernant1/speedbag"
   url "https://github.com/mckernant1/speedbag/archive/refs/tags/0.0.1.tar.gz"
