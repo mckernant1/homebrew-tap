@@ -5,7 +5,6 @@ class Speedbag < Formula
   sha256 "fb692452d5963feaddd5dfac94e6f4fa225e29be33253476e9eb9cdeacf0e56a"
 
   depends_on "rust" => :build
-  depends_on "git"
 
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."

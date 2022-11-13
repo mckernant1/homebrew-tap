@@ -5,7 +5,6 @@ class AutoUpdater < Formula
   sha256 "dfb7513d0bcd8a4a65ad0437b432d8b7a5cfd3097eafe5190ecb8395639362b9"
 
   depends_on "rust" => :build
-  depends_on "git"
 
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."

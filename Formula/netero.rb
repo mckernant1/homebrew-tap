@@ -5,7 +5,6 @@ class Netero < Formula
   sha256 "66c2a66e2a75d1168ace9311a8a666cf436ec7074a3eb6b7a4995c027c50716f"
 
   depends_on "rust" => :build
-  depends_on "git"
 
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."
