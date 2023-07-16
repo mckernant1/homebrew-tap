@@ -1,8 +1,8 @@
 class Jack < Formula
   desc "Cloudwatch logs CLI"
   homepage "https://github.com/mckernant1/jack"
-  url "https://github.com/mckernant1/jack/archive/refs/tags/0.0.2.tar.gz"
-  sha256 "0deec225c7a0f4040da0a25306e2be311f2791f669b0f442569eab5c4d5912b0"
+  url "https://github.com/mckernant1/jack/archive/refs/tags/0.0.3.tar.gz"
+  sha256 "6947afa59f9ca718e53c590ce44e60b2648ccb8a2bfc0ca098050e6ca776bacf"
 
   depends_on "rust" => :build
 
