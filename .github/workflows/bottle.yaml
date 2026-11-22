@@ -1,0 +1,133 @@
+name: Build and Publish Homebrew Bottles
+
+on:
+  repository_dispatch:
+    types: [build-bottle]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag in auto-updater (e.g. v0.2.0)'
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  FORMULA: auto-updater
+  SOURCE_REPO: mckernant1/auto-updater
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.vars.outputs.tag }}
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Determine tag and update formula URL/SHA256
+        id: vars
+        run: |
+          TAG="${{ github.event.client_payload.tag || github.event.inputs.tag }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+          TARBALL_URL="https://github.com{{ env.SOURCE_REPO }}/archive/refs/tags/${TAG}.tar.gz"
+          curl -sL "$TARBALL_URL" -o source.tar.gz
+          SHA256=$(sha256sum source.tar.gz | awk '{print $1}')
+
+          # Update url and sha256 in Formula/auto-updater.rb
+          sed -i "s|url \".*\"|url \"$TARBALL_URL\"|" Formula/${{ env.FORMULA }}.rb
+          sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" Formula/${{ env.FORMULA }}.rb
+
+          # Remove existing bottle block before rebuilding
+          ruby -i -pe 'BEGIN{skip=false}; skip=true if /^\s*bottle do/; if skip; skip=false if /^\s*end/; next; end' Formula/${{ env.FORMULA }}.rb
+
+      - name: Commit updated formula
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/${{ env.FORMULA }}.rb
+          git commit -m "${{ env.FORMULA }}: update to ${{ steps.vars.outputs.tag }}"
+          git push
+
+  build-bottles:
+    needs: update-formula
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15 # Apple Silicon (arm64)
+          - os: macos-13 # Intel (x86_64)
+          - os: ubuntu-24.04 # Linux (x86_64)
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew on Linux
+        if: runner.os == 'Linux'
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
+
+      - name: Build bottle
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_FROM_API: 1
+        run: |
+          TAG="${{ needs.update-formula.outputs.tag }}"
+          ROOT_URL="https://github.com{{ env.SOURCE_REPO }}/releases/download/${TAG}"
+          TAP_NAME="${{ github.repository_owner }}/tap"
+
+          # Point local tap to this checked-out branch
+          mkdir -p "$(brew --repository)/Library/Taps/${{ github.repository_owner }}"
+          ln -sf "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/${{ github.repository_owner }}/homebrew-tap"
+
+          brew install --build-bottle "${TAP_NAME}/${{ env.FORMULA }}"
+          brew bottle --json --root-url="$ROOT_URL" "${TAP_NAME}/${{ env.FORMULA }}"
+
+          # Fix Homebrew's local double-dash (--) filename quirk to single-dash (-)
+          for f in *--*.bottle.tar.gz; do
+            mv "$f" "${f/--/-}"
+          done
+          sed -i.bak 's/--/-/g' *.bottle.json && rm -f *.bottle.json.bak
+
+      - name: Upload bottle assets to auto-updater GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          tag_name: ${{ needs.update-formula.outputs.tag }}
+          files: "*.bottle.tar.gz"
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+      - name: Upload bottle JSON metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: bottle-json-${{ matrix.os }}
+          path: "*.bottle.json"
+
+  publish-bottle-block:
+    needs: [update-formula, build-bottles]
+    runs-on: macos-15
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Download all bottle JSONs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bottle-json-*
+          merge-multiple: true
+
+      - name: Merge bottle block into formula and push
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/${{ github.repository_owner }}"
+          ln -sf "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/${{ github.repository_owner }}/homebrew-tap"
+
+          brew bottle --merge --write --no-commit *.bottle.json
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/${{ env.FORMULA }}.rb
+          git commit -m "${{ env.FORMULA }}: add ${{ needs.update-formula.outputs.tag }} bottles"
+          git push
