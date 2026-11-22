@@ -35,7 +35,7 @@ jobs:
           TAG="${{ github.event.client_payload.tag || github.event.inputs.tag }}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
-          TARBALL_URL="https://github.com{{ env.SOURCE_REPO }}/archive/refs/tags/${TAG}.tar.gz"
+          TARBALL_URL="https://github.com${SOURCE_REPO}/archive/refs/tags/${TAG}.tar.gz"
           curl -sL "$TARBALL_URL" -o source.tar.gz
           SHA256=$(sha256sum source.tar.gz | awk '{print $1}')
 
@@ -80,7 +80,7 @@ jobs:
           HOMEBREW_NO_INSTALL_FROM_API: 1
         run: |
           TAG="${{ needs.update-formula.outputs.tag }}"
-          ROOT_URL="https://github.com{{ env.SOURCE_REPO }}/releases/download/${TAG}"
+          ROOT_URL="https://github.com${SOURCE_REPO}/releases/download/${TAG}"
           TAP_NAME="${{ github.repository_owner }}/tap"
 
           # Point local tap to this checked-out branch
