@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout tap
         uses: actions/checkout@v6
+        with:
+          ref: master
 
       - name: Determine tag and update formula URL/SHA256
         id: vars
@@ -67,6 +69,8 @@ jobs:
     steps:
       - name: Checkout tap
         uses: actions/checkout@v6
+        with:
+          ref: master
 
       - name: Set up Homebrew on Linux
         if: runner.os == 'Linux'
@@ -115,6 +119,8 @@ jobs:
     steps:
       - name: Checkout tap
         uses: actions/checkout@v6
+        with:
+          ref: master
 
       - name: Download all bottle JSONs
         uses: actions/download-artifact@v4
