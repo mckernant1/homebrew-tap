@@ -1,8 +1,8 @@
 class AutoUpdater < Formula
   desc "Automatically updates added package managers"
   homepage "https://github.com/mckernant1/auto-updater"
-  url "https://github.com/mckernant1/auto-updater/archive/refs/tags/v0.2.4.tar.gz"
-  sha256 "d13beb3feaadb8f6275a74283b6a44e63d11e336df87f4d4026bc9e750d8d06d"
+  url "https://github.com/mckernant1/auto-updater/archive/refs/tags/v0.2.5.tar.gz"
+  sha256 "f828ce7673477e90e20588d94bb91d5eb6781c4a6aaf75c5f27e492ba749df65"
 
   depends_on "rust" => :build
 
