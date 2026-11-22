@@ -79,6 +79,8 @@ jobs:
           TAG="${{ needs.update-formula.outputs.tag }}"
           ROOT_URL="https://github.com/${SOURCE_REPO}/releases/download/${TAG}"
           TAP_NAME="${{ github.repository_owner }}/tap"
+          
+          brew trust "${TAP_NAME}"
 
           # Point local tap to this checked-out branch
           mkdir -p "$(brew --repository)/Library/Taps/${{ github.repository_owner }}"
@@ -124,7 +126,7 @@ jobs:
         run: |
           mkdir -p "$(brew --repository)/Library/Taps/${{ github.repository_owner }}"
           ln -sf "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/${{ github.repository_owner }}/homebrew-tap"
-          brew trust "${TAP_NAME}"
+          brew trust "${{ github.repository_owner }}/tap"
 
           brew bottle --merge --write --no-commit *.bottle.json
 
