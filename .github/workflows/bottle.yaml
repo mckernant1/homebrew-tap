@@ -16,6 +16,10 @@ env:
   FORMULA: auto-updater
   SOURCE_REPO: mckernant1/auto-updater
 
+defaults:
+  run:
+    shell: bash -xe {0}
+
 jobs:
   update-formula:
     runs-on: ubuntu-latest
