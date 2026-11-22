@@ -124,6 +124,7 @@ jobs:
         run: |
           mkdir -p "$(brew --repository)/Library/Taps/${{ github.repository_owner }}"
           ln -sf "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/${{ github.repository_owner }}/homebrew-tap"
+          brew trust "${TAP_NAME}"
 
           brew bottle --merge --write --no-commit *.bottle.json
 
